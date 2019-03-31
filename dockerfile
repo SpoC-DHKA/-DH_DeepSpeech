@@ -24,14 +24,16 @@ RUN wget https://bootstrap.pypa.io/get-pip.py && \
     python3 get-pip.py && \
     pip3 install --upgrade pip
 
-RUN virtualenv -p python3 $HOME/tmp/deepspeech-venv/ && \
-    source $HOME/tmp/deepspeech-venv/bin/activate
-
-RUN echo 'source $HOME/tmp/deepspeech-venv/bin/activate' >> /etc/profile
-
 RUN pip3 install --no-cache-dir -r requirements.txt
+
+RUN virtualenv -p python3 /tmp/deepspeech-venv/ 
+
+RUN echo 'source /tmp/deepspeech-venv/bin/activate' >> /etc/profile
 
 RUN git clone https://github.com/mozilla/DeepSpeech
 
-RUN cd DeepSpeech && \
-    pip3 install $(python3 util/taskcluster.py --decoder)
+RUN pip3 install $(python3 /DeepSpeech/util/taskcluster.py --decoder)
+
+RUN echo 'alias python=python3' >> /root/.bashrc
+
+RUN apt purge -y python2.7-minimal
