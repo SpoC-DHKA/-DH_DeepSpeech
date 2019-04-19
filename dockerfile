@@ -34,6 +34,6 @@ RUN git clone https://github.com/mozilla/DeepSpeech
 
 RUN pip3 install $(python3 /DeepSpeech/util/taskcluster.py --decoder)
 
-RUN echo 'alias python=python3' >> /root/.bashrc
+RUN rm -f /usr/bin/python
 
-RUN apt purge -y python2.7-minimal
+RUN ln -s /usr/bin/python3 /usr/bin/python
